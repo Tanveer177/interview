@@ -9,7 +9,7 @@
                   <div class="card-header">Register</div>
                   <div class="card-body">
 
-                      <form action="{{ route('register.post') }}" method="POST" id="handleAjax">
+                      <form action="{{ route('register.post') }}" method="POST" id="handleAjax" enctype="multipart/form-data">
 
                           @csrf
 
@@ -54,6 +54,15 @@
                                   @endif
                               </div>
                           </div>
+                          <div class="form-group row">
+                            <label for="Upload Images" class="col-md-4 col-form-label text-md-right">Upload Images</label>
+                            <div class="col-md-6">
+                                <input type="file" id="upload_images" class="form-control" name="upload_images" required>
+                                @if ($errors->has('upload_images'))
+                                    <span class="text-danger">{{ $errors->first('upload_images') }}</span>
+                                @endif
+                            </div>
+                        </div>
 
                           <div class="form-group row">
                               <div class="col-md-6 offset-md-4">

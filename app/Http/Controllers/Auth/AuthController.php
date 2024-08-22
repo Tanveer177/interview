@@ -88,8 +88,18 @@ class AuthController extends Controller
         }
 
         $data = $request->all();
-        $user = $this->create($data);
 
+        $user = $this->create($data);
+        if ($file = $request->file('upload_images')) {
+            $video_name = md5(rand(1000, 10000));
+            $ext = strtolower($file->getClientOriginalExtension());
+            $video_full_name = $video_name . '.' . $ext;
+            $upload_path = 'images/';
+            $video_url = $upload_path . $video_full_name;
+            $file->move($upload_path, $video_url);
+            $user->upload_images = $video_url;
+        }
+        $user->save();
         Auth::login($user);
 
         return response()->json([
@@ -107,7 +117,9 @@ class AuthController extends Controller
     public function dashboard()
     {
         if(Auth::check()){
-            return view('dashboard')->with('Wow congratulation You are login');
+            $users=User::all();
+            return view('dashboard',compact('users'));
+
 
         }
 
